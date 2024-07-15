@@ -57,6 +57,38 @@ app.post('/posts', async (req, res) => {
   }
 })
 
+// Ruta PUT para actualizar likes en un post
+app.put('/posts/like/:id', async (req, res) => {
+  const postId = req.params.id;
+  try {
+    const client = await pool.connect();
+    const result = await client.query(
+      'UPDATE posts SET likes = likes + 1 WHERE id = $1 RETURNING *',
+      [postId]
+    );
+    const updatedPost = result.rows[0];
+    client.release();
+    res.json(updatedPost);
+  } catch (err) {
+    console.error('Error al actualizar likes', err);
+    res.status(500).send('Error al actualizar likes');
+  }
+});
+
+// Ruta DELETE para eliminar un post
+app.delete('/posts/:id', async (req, res) => {
+  const postId = req.params.id;
+  try {
+    const client = await pool.connect();
+    await client.query('DELETE FROM posts WHERE id = $1', [postId]);
+    client.release();
+    res.send(`Post con ID ${postId} eliminado correctamente`);
+  } catch (err) {
+    console.error('Error al eliminar el post', err);
+    res.status(500).send('Error al eliminar el post');
+  }
+});
+
 // Manejador para la ruta raíz '/'
 app.get('/', (req, res) => {
     res.send('¡Bienvenido a Like Me! Esta es la página de inicio.')
