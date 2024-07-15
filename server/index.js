@@ -7,6 +7,7 @@ import dotenv from 'dotenv' // Variables de entorno
 // Cargar las variables de entorno desde el archivo .env
 dotenv.config()
 
+const express = require ('express')
 const app = express()
 const port = 3000
 
