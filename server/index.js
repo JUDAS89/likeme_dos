@@ -23,6 +23,7 @@ const pool = new Pool({
     port: process.env.DB_PORT,
 })
 
+
 // 3-Ruta GET para obtener todos los posts
 app.get('/posts', async (req, res) => {
  try {

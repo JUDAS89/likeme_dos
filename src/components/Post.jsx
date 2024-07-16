@@ -1,3 +1,5 @@
+import React from "react";
+
 function Post({
   post: { id, titulo, img, descripcion, likes },
   like,
